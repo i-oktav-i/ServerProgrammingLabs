@@ -1,0 +1,10 @@
+[
+  { "url": "/", "name": "Home" },
+  { "url": "/about-us", "name": "About us" },
+  { "url": "/services", "name": "Our Services" },
+  { "url": "/portfolio", "name": "Portfolio" },
+  { "url": "/features", "name": "Features" },
+  { "url": "/testimonials", "name": "Testimonials" },
+  { "url": "/pricing", "name": "Pricing" },
+  { "url": "/contact", "name": "Contact" }
+]

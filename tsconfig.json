@@ -1,0 +1,27 @@
+{
+  "ts-node": {
+    "transpileOnly": true
+  },
+
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "module": "Node16",
+    "lib": ["ES2023", "DOM"],
+    "skipLibCheck": true,
+
+    "moduleResolution": "Node16",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "typeRoots": ["node_modules/@types/"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}
