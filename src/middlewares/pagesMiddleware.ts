@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import navLinks from "../links.json";
+import portfolioItems from "../portfolio.json";
 
 export const pagesMiddleware = async (req: Request, res: Response) => {
   res.render(req.url === "/" ? "home" : req.params.page, {
@@ -8,5 +9,6 @@ export const pagesMiddleware = async (req: Request, res: Response) => {
       ...link,
       active: req.url === link.url,
     })),
+    portfolioItems,
   });
 };

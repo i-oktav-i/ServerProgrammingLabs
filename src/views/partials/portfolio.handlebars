@@ -1,0 +1,13 @@
+<div id="da-thumbs" class="da-thumbs portfolio">      
+  {{#each portfolioItems}}
+    <div class="post-media pitem item-w1 item-h1 {{#each groups}}cat{{this}}{{/each}}">
+      <a href="{{image}}" data-rel="prettyPhoto[gal]">
+        <img src="{{image}}" alt="" class="img-responsive" />
+        <div>
+          <h3>{{title}} <small>{{description}}</small></h3>
+          <i class="flaticon-unlink"></i>
+        </div>
+      </a>
+    </div>
+  {{/each}}
+</div>
