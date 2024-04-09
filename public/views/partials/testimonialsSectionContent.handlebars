@@ -1,0 +1,30 @@
+<div class="section-title text-center">
+  <h3>Testimonials</h3>
+  <p class="lead">
+    We thanks for all our awesome testimonials! There are hundreds of our happy
+    customers!
+    <br />Let's see what others say about GoodWEB Solutions website template!
+  </p>
+</div>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+    <div class="testi-carousel owl-carousel owl-theme">
+      {{#each testimonials}}
+        <div class="testimonial clearfix">
+          <div class="desc">
+            <h3><i class="fa fa-quote-left"></i>{{title}}</h3>
+            <p class="lead">{{description}}</p>
+          </div>
+          <div class="testi-meta">
+            <img src="{{image_url}}" alt="" class="img-responsive alignleft" />
+            <h4>{{name}} <small>- {{occupation}}</small></h4>
+          </div>
+          <!-- end testi-meta -->
+        </div>
+      {{/each}}
+    </div>
+    <!-- end carousel -->
+  </div>
+  <!-- end col -->
+</div>

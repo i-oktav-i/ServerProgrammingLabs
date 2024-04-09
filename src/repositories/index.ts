@@ -1,0 +1,1 @@
+export { testimonialsRepository } from "./testimonials";

@@ -1,0 +1,1 @@
+export { testimonialsController } from "./testimonials";
