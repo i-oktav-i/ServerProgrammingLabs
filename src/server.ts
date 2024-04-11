@@ -3,7 +3,7 @@ import express from "express";
 import { create } from "express-handlebars";
 import path from "path";
 
-import { apiRouter, pagesRouter } from "./routers";
+import { apiRouter, authRouter, pagesRouter } from "./routers";
 
 const app = express();
 
@@ -22,6 +22,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api", apiRouter);
 app.use(`/`, pagesRouter);
+app.use("/", authRouter);
+
 app.use(express.static("public/"));
 
 app.listen(3000, () => {
