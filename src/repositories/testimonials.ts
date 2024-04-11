@@ -20,7 +20,7 @@ class TestimonialsRepository implements TestimonialsRepositoryInterface {
   createTestimonial = async (testimonial: Testimonials) => {
     try {
       const data = await database.query<Testimonials>(
-        "INSERT INTO testimonials (name, image_url, occupation, title, description) VALUES ($1, $2, $3, $4, $5)",
+        "INSERT INTO testimonials (name, image_url, occupation, title, description) VALUES ($1, $2, $3, $4, $5) RETURNING *",
         [
           testimonial.name,
           testimonial.image_url,
