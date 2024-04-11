@@ -1,5 +1,80 @@
 <div id="test-box" class="section wb">
   <div class="container">
+    <div class="contact_form">
+      <div class="col-md-8 col-md-offset-2">
+        <form
+          class="row"
+          action="/api/testimonials"
+          method="post"
+          id="testimonials-form"
+        >
+          <fieldset class="row-fluid">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <label>
+                Fullname
+          
+                <input name="name" type="text" required class="form-control">
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="row-fluid">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <label>
+                Image url
+              
+                <input name="image_url" type="text" required class="form-control">
+              </label>
+            </div>
+          </fieldset>
+          
+          <fieldset class="row-fluid">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <label>
+                Occupation
+              
+                <input name="occupation" type="text" required class="form-control">
+              </label>
+            </div>
+          </fieldset>
+
+          
+          <fieldset class="row-fluid">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <label>
+                Title
+              
+                <input name="title" type="text" required class="form-control">
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="row-fluid">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <label>
+                Message
+              
+                <input name="description" required class="form-control">
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 text-center">
+            <button
+              type="submit"
+              value="SEND"
+              id="submit"
+              class="btn btn-light btn-radius btn-brd grd1 btn-block"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
     {{> testimonialsSectionContent}}
   </div>
 </div>
