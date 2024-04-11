@@ -16,7 +16,6 @@ const jwtOptions = {
 
 passport.use(
   new Strategy(jwtOptions, async (payload, done) => {
-    console.log("payload", payload);
     try {
       const user = await userRepository.get(payload.sub);
       if (user) {
