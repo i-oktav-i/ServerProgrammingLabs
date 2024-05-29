@@ -21,16 +21,14 @@ export class CommonPGRepository<T extends Record<string, any>>
   implements Repository<T>
 {
   constructor(
-    private readonly database: Pool,
-    private readonly tableName: string,
-    private readonly fields: (keyof T & string)[]
+    protected readonly database: Pool,
+    protected readonly tableName: string,
+    protected readonly fields: (keyof T & string)[]
   ) {}
 
   getAll = async (): Promise<T[]> => {
     try {
-      const data = await this.database.query(
-        `SELECT * FROM superhero.${this.tableName}`
-      );
+      const data = await this.database.query(`SELECT * FROM ${this.tableName}`);
       return data.rows;
     } catch (error) {
       throw pgErrorToDbError(error);
@@ -40,7 +38,7 @@ export class CommonPGRepository<T extends Record<string, any>>
   get = async (id: number): Promise<T> => {
     try {
       const data = await this.database.query(
-        `SELECT * FROM superhero.${this.tableName} WHERE id = $1`,
+        `SELECT * FROM ${this.tableName} WHERE id = $1`,
         [id]
       );
       return data.rows[0];
@@ -52,7 +50,7 @@ export class CommonPGRepository<T extends Record<string, any>>
   create = async (entity: T): Promise<T> => {
     try {
       const data = await this.database.query(
-        `INSERT INTO superhero.${this.tableName} (${this.fields.join(", ")}) 
+        `INSERT INTO ${this.tableName} (${this.fields.join(", ")}) 
         VALUES (${this.fields.map((_, index) => `$${index + 1}`).join(", ")})
         RETURNING *`,
         this.fields.map((field) => entity[field])
@@ -67,7 +65,7 @@ export class CommonPGRepository<T extends Record<string, any>>
   update = async (entity: T): Promise<T> => {
     try {
       const data = await this.database.query(
-        `UPDATE superhero.${this.tableName} SET ${this.fields
+        `UPDATE ${this.tableName} SET ${this.fields
           .map((field, index) => `${field} = $${index + 1}`)
           .join(", ")}
         WHERE id = $${this.fields.length + 1}
@@ -83,7 +81,7 @@ export class CommonPGRepository<T extends Record<string, any>>
   delete = async (id: number): Promise<T> => {
     try {
       const data = await this.database.query(
-        `DELETE FROM superhero.${this.tableName} WHERE id = $1 RETURNING *`,
+        `DELETE FROM ${this.tableName} WHERE id = $1 RETURNING *`,
         [id]
       );
       return data.rows[0];

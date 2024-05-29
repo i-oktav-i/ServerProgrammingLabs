@@ -1,0 +1,86 @@
+<div>
+  <h1>Chat</h1>
+  <div id="messages"></div>
+</div>
+
+<form id="form" action="">
+  <input id="input" autocomplete="off" /><button>Send</button>
+</form>
+
+<template id="message-template">
+  <div class="message">
+    <div class="message-text"></div>
+    <div class="message-timestamp"></div>
+  </div>
+</template>
+
+<style>
+  #messages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 50vh;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .message {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+
+  .message-text {
+    font-weight: bold;
+  }
+
+  .message-timestamp {
+    font-size: 0.8em;
+    color: #666;
+  }
+</style>
+
+<script>
+  const form = document.getElementById('form');
+  const input = document.getElementById('input');
+  const messagesNode = document.getElementById('messages');
+
+  const socket = new WebSocket('ws://localhost:3000');
+
+  let isFirstMessage = true;
+
+  const createMessageElement = message => {
+    const messageElement = document.getElementById('message-template').content.cloneNode(true);
+    messageElement.querySelector('.message-text').textContent = message.text;
+    messageElement.querySelector('.message-timestamp').textContent = new Date(message.timestamp).toLocaleString();
+    return messageElement;
+  };
+
+  socket.onmessage = function(event) {
+    if (isFirstMessage) {
+      const messages = JSON.parse(event.data);
+
+      messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+      messages.forEach(message => {
+        messagesNode.appendChild(createMessageElement(message));
+      });
+
+      isFirstMessage = false;
+    } else {
+      const message = JSON.parse(event.data);
+      messagesNode.appendChild(createMessageElement(message));
+    }
+  };
+
+  form.onsubmit = function(e) {
+    e.preventDefault();
+    socket.send(input.value);
+    input.value = '';
+  };
+</script>

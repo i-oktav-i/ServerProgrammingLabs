@@ -19,6 +19,7 @@
     "@types/passport-jwt": "^4.0.1",
     "@types/passport-local": "^1.0.38",
     "@types/pg": "^8.11.5",
+    "@types/ws": "^8.5.10",
     "typescript": "^5.4.3"
   },
   "dependencies": {
@@ -30,6 +31,7 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "pg": "^8.11.5",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "ws": "^8.17.0"
   }
 }

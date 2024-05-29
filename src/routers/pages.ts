@@ -9,4 +9,4 @@ const pagesRoutes = navLinks
   .filter(Boolean)
   .join("|");
 
-pagesRouter.get(`/:page(${pagesRoutes}|)`, pagesMiddleware);
+pagesRouter.get(`/:page(${pagesRoutes}|chat|)`, pagesMiddleware);

@@ -16,5 +16,6 @@ export const pagesMiddleware = async (req: Request, res: Response) => {
     })),
     portfolioItems,
     testimonials,
+    ...(req.params.page === "chat" ? { layout: false } : {}),
   });
 };

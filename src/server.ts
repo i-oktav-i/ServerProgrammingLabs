@@ -1,11 +1,16 @@
 import bodyParser from "body-parser";
 import express from "express";
 import { create } from "express-handlebars";
+import http from "http";
 import path from "path";
+import WebSocket from "ws";
 
+import { messageRepository } from "./repositories/messages";
 import { apiRouter, authRouter, pagesRouter } from "./routers";
 
 const app = express();
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 
 const viewsDir = path.join(__dirname, "..", "public", "views");
 
@@ -26,6 +31,31 @@ app.use("/", authRouter);
 
 app.use(express.static("public/"));
 
-app.listen(3000, () => {
+wss.on("connection", async (ws) => {
+  ws.on("message", async (message) => {
+    try {
+      const data = await messageRepository.create({ text: message.toString() });
+      // Отправка сообщения всем клиентам
+      wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify(data));
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  ws.send(JSON.stringify(await messageRepository.getAll()));
+});
+
+// @ts-ignore
+app.on("upgrade", (request, socket, head) => {
+  wss.handleUpgrade(request, socket, head, (ws) => {
+    wss.emit("connection", ws, request);
+  });
+});
+
+server.listen(3000, () => {
   console.log("Server is running on http://localhost:3000");
 });

@@ -4,6 +4,6 @@ import { CommonPGRepository } from "../shared/utils";
 
 export const colorRepository = new CommonPGRepository<Color>(
   database,
-  "colour",
+  "superhero.colour",
   ["id", "colour"]
 );

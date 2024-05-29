@@ -4,7 +4,7 @@ import { CommonPGRepository } from "../shared/utils";
 
 export const superheroesRepository = new CommonPGRepository<Superhero>(
   database,
-  "superhero",
+  "superhero.superhero",
   [
     "superhero_name",
     "full_name",
