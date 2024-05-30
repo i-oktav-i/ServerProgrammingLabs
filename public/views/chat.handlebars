@@ -11,6 +11,8 @@
   <div class="message">
     <div class="message-text"></div>
     <div class="message-timestamp"></div>
+
+    <button class="delete">X</button>
   </div>
 </template>
 
@@ -56,31 +58,53 @@
 
   const createMessageElement = message => {
     const messageElement = document.getElementById('message-template').content.cloneNode(true);
+    messageElement.querySelector('.message').id = message.id;
     messageElement.querySelector('.message-text').textContent = message.text;
     messageElement.querySelector('.message-timestamp').textContent = new Date(message.timestamp).toLocaleString();
+    messageElement.querySelector('.delete').onclick = () => {
+      socket.send(JSON.stringify({
+        type: 'delete',
+        payload: { id: message.id }
+      }));
+    };
+
     return messageElement;
   };
 
   socket.onmessage = function(event) {
+    const action = JSON.parse(event.data);
+
     if (isFirstMessage) {
-      const messages = JSON.parse(event.data);
-
-      messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-
-      messages.forEach(message => {
+      action.forEach(message => {
         messagesNode.appendChild(createMessageElement(message));
       });
 
       isFirstMessage = false;
+
+      return;
     } else {
-      const message = JSON.parse(event.data);
-      messagesNode.appendChild(createMessageElement(message));
+      if (action.type === 'create') {
+        messagesNode.appendChild(createMessageElement(action.payload));
+      } else if (action.type === 'delete') {
+        const messageElement = document.getElementById(action.payload.id);
+
+        if (!messageElement) return;
+
+        messagesNode.removeChild(messageElement);
+      }
     }
+
   };
 
   form.onsubmit = function(e) {
     e.preventDefault();
-    socket.send(input.value);
+
+    if (!input.value) return;
+
+    socket.send(JSON.stringify({
+      type: 'create',
+      payload: { text: input.value }
+    }));
     input.value = '';
   };
 </script>

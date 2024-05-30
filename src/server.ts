@@ -34,12 +34,31 @@ app.use(express.static("public/"));
 wss.on("connection", async (ws) => {
   ws.on("message", async (message) => {
     try {
-      const data = await messageRepository.create({ text: message.toString() });
-      // Отправка сообщения всем клиентам
-      wss.clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
-          client.send(JSON.stringify(data));
+      const action = JSON.parse(message.toString());
+
+      if (!["create", "delete"].includes(action.type)) return;
+
+      const getSendData = async () => {
+        if (action.type === "delete") {
+          await messageRepository.delete(action.payload.id);
+
+          return JSON.stringify(action);
         }
+
+        const data = await messageRepository.create(action.payload);
+
+        return JSON.stringify({
+          type: "create",
+          payload: data,
+        });
+      };
+
+      const sendData = await getSendData();
+
+      wss.clients.forEach((client) => {
+        if (client.readyState !== WebSocket.OPEN) return;
+
+        client.send(sendData);
       });
     } catch (error) {
       console.error(error);
